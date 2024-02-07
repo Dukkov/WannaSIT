@@ -1,7 +1,7 @@
 import cors from "cors";
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://ango-sesac.netlify.app"],
+  origin: ["http://localhost:3000", "http://ango-sesac.s3-website.ap-northeast-2.amazonaws.com"],
   credentials: true,
 };
 
