@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^1.6.3",
     "connect-mongo": "^5.1.0",
+    "connect-redis": "^7.1.1",
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",
     "dotenv": "^16.3.1",
@@ -20,6 +21,7 @@
     "express-session": "^1.17.3",
     "express-ws": "^5.0.2",
     "korean-random-names-generator": "^0.0.0",
-    "mysql2": "^3.9.1"
+    "mysql2": "^3.9.1",
+    "redis": "^4.6.13"
   }
 }
