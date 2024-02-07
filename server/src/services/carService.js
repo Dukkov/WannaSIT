@@ -64,7 +64,7 @@ async function determineHighTraffic(routeDetail) {
     routeDetail.map(async (route) => {
       const params = [route.arrival_day, route.arrival_hour];
       const [rows, fields] = await executeQuery(connection, query, params);
-      const getOffThreshold = rows.get_off_count; // 해당 시간대 상위 15등에 해당하는 값
+      const getOffThreshold = rows[0].get_off_count; // 해당 시간대 상위 15등에 해당하는 값
 
       if (route.get_off_count >= getOffThreshold) traffic.push(1);
       else traffic.push(0);
