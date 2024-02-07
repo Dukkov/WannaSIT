@@ -7,6 +7,7 @@ const MAX_PERCENTAGE_COUNT = TOTAL_SEATS - 20;
 // 랭킹 계산 함수
 function calculateRanking(routeDetail) {
   const countByCar = gatherCountByCar(routeDetail); // 호차별로 예측인원 모으기
+  console.log(countByCar);
   const bestByCar = findBestByCar(countByCar);
 
   sortRanking(bestByCar);
@@ -63,7 +64,7 @@ async function determineHighTraffic(routeDetail) {
     routeDetail.map(async (route) => {
       const params = [route.arrival_day, route.arrival_hour];
       const [rows, fields] = await executeQuery(connection, query, params);
-      const getOffThreshold = rows.get_off_count; // 해당 시간대 상위 15등에 해당하는 값
+      const getOffThreshold = rows[0].get_off_count; // 해당 시간대 상위 15등에 해당하는 값
 
       if (route.get_off_count >= getOffThreshold) traffic.push(1);
       else traffic.push(0);
@@ -137,6 +138,16 @@ function sortRanking(bestByCar) {
     }
   });
 
+  bestByCar.sort((a, b) => {
+    // 출발역에서 앉을 수 있다면 0순위
+    if (a.stationIndex === 0 && a.bestCount <= TOTAL_SEATS) {
+      if (a.bestCount === b.bestCount) {
+        return a.stationIndex - b.stationIndex;
+      } else {
+        return a.bestCount - b.bestCount;
+      }
+    }
+  });
   console.log("정렬 후: ", bestByCar);
 }
 
