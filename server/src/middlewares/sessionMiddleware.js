@@ -1,6 +1,17 @@
 import session from "express-session";
-import MongoStore from "connect-mongo";
+import { createClient } from "redis";
+import RedisStore from "connect-redis";
 import config from "../config/index.js";
+
+const redisClient = createClient({
+  password: config.redisPassword,
+  socket: {
+    host: config.redisHost,
+    port: config.redisPort,
+  },
+});
+
+redisClient.connect().catch(console.error);
 
 const sessionMiddleware = session({
   secret: config.sessionSecret,
@@ -9,7 +20,10 @@ const sessionMiddleware = session({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7일
   },
-  store: MongoStore.create({ mongoUrl: config.mongodbURI, collectionName: "sessions" }),
+  store: new RedisStore({
+    client: redisClient,
+    prefix: "Ango:",
+  }),
 });
 
 export default sessionMiddleware;
