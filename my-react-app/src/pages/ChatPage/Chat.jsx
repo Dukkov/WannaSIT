@@ -5,7 +5,7 @@ import HamHeader from "../../components/Header/HamHeader";
 import chatSendBtn from "../../assets/images/icon/chatSendBtn.svg";
 
 function Chat() {
-  const [socketUrl] = useState("ws://localhost:4000/chat");
+  const [socketUrl] = useState("wss://api.angosipda.site/chat");
   const { sendMessage, lastMessage } = useWebSocket(socketUrl, { withCredentials: true });
   const [messageHistory, setMessageHistory] = useState([]); //웹소켓에서 메시지를 받으면 호출되는 상태
   const scrollContainerRef = React.createRef(); // 스크롤 컨테이너의 ref
@@ -49,57 +49,48 @@ function Chat() {
 
   useEffect(() => {
     // 새로운 메시지가 도착할 때마다 스크롤을 맨 아래로 이동
-    scrollContainerRef.current.scrollTop =
-      scrollContainerRef.current.scrollHeight;
+    scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
   }, [lastMessage, scrollContainerRef]);
-
 
   return (
     <div className="Chat">
       <HamHeader />
-        <div className="messageContainer" ref={scrollContainerRef}>
-          <ul className="messageList">
-            {messageHistory.map((message, idx) => {
-              if (message.messagetype === "received") {
-                return (
-                  <>
-                    <div className="sender">{message.sender}</div>
-                    <div key={idx} className="messageBubble receivedMessage">
-                      {message.content}
-                    </div>
-                  </>
-                );
-              } else if (message.messagetype === "sent") {
-                return (
-                  <>
+      <div className="messageContainer" ref={scrollContainerRef}>
+        <ul className="messageList">
+          {messageHistory.map((message, idx) => {
+            if (message.messagetype === "received") {
+              return (
+                <>
+                  <div className="sender">{message.sender}</div>
+                  <div key={idx} className="messageBubble receivedMessage">
+                    {message.content}
+                  </div>
+                </>
+              );
+            } else if (message.messagetype === "sent") {
+              return (
+                <>
                   <div className="username">{message.sender}</div>
                   <div key={idx} className="messageBubble sentMessage">
                     {message.content}
                   </div>
-                  </>
-                );
-              } else {
-                return (
-                  <div key={idx} className="userInOut">
-                    {message.content}
-                  </div>
-                );
-              }
-            })}
-          </ul>
-        </div>
-        <div className="inputForm">
-          <input
-            type="text"
-            id="inputMessage"
-            value={message}
-            onChange={onMessage}
-            onKeyUp={handleKeyUp}
-            placeholder="메세지를 입력하세요"
-          />
-          <img src={chatSendBtn} alt="전송" id="sendButton" onClick={sendMsg} />
-        </div>
+                </>
+              );
+            } else {
+              return (
+                <div key={idx} className="userInOut">
+                  {message.content}
+                </div>
+              );
+            }
+          })}
+        </ul>
       </div>
+      <div className="inputForm">
+        <input type="text" id="inputMessage" value={message} onChange={onMessage} onKeyUp={handleKeyUp} placeholder="메세지를 입력하세요" />
+        <img src={chatSendBtn} alt="전송" id="sendButton" onClick={sendMsg} />
+      </div>
+    </div>
   );
 }
 
