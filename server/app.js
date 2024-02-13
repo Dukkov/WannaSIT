@@ -22,6 +22,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(randomNameMiddleware);
 
+app.set("trust proxy", 1);
+
 app.use("/stations", stationsRouter);
 app.use("/cars", carsRouter);
 app.use("/posts", postsRouter);
