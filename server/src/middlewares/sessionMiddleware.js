@@ -19,6 +19,10 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7일
+    sameSite: "none",
+    secure: true,
+    domain: "angosipda.site",
+    path: "/",
   },
   store: new RedisStore({
     client: redisClient,
