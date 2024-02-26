@@ -6,9 +6,8 @@ const instance = axios.create({
   timeout: 10000, // 요청 이후 언제까지 기다릴건지
   withCredentials: true, // 클라이언트에서 요청 시 쿠키 포함해서 보내주도록 "withCredentials: true" 설정
   headers: {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "https://angosipda.site",
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 export default instance;
