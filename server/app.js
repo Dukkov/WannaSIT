@@ -1,5 +1,6 @@
 import express from "express";
 import expressWs from "express-ws";
+import morgan from "morgan";
 import config from "./src/config/index.js";
 import sessionMiddleware from "./src/middlewares/sessionMiddleware.js";
 import corsMiddleware from "./src/middlewares/corsMiddleware.js";
@@ -16,6 +17,7 @@ const port = config.port;
 
 // favicon 무시
 app.use("/favicon.ico", () => {});
+app.use(morgan("combined"));
 app.use(sessionMiddleware);
 app.use(corsMiddleware);
 app.use(express.json());
